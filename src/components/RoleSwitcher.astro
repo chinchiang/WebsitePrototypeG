@@ -1,0 +1,19 @@
+---
+/**
+ * 架構先行、內容後補
+ * 角色切換為 UI 預留，不連接真實帳號或權限系統。
+ */
+import { roles } from "../lib/roles";
+---
+
+<div class="role-switcher">
+  <label class="sr-only" for="role-select">預留角色切換（無真實邏輯）</label>
+  <select
+    id="role-select"
+    name="role"
+    data-role-switcher
+    class="h-11 min-w-[9.5rem] rounded-md border border-border bg-surface px-3 text-sm text-ink"
+  >
+    {roles.map((role) => <option value={role.id}>{role.label}</option>)}
+  </select>
+</div>

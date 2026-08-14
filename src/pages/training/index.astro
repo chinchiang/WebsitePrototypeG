@@ -1,0 +1,82 @@
+---
+/**
+ * 架構先行、內容後補
+ * 意識與訓練中心：左側分類 + 右側課程卡片（含進度條佔位）。
+ */
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PageHeader from "../../components/PageHeader.astro";
+
+const courses = (await getCollection("training")).sort((a, b) => a.id.localeCompare(b.id));
+const categories = [...new Set(courses.map((c) => c.data.category))];
+---
+
+<BaseLayout title="意識與訓練中心" current="training">
+  <PageHeader
+    kicker="Awareness & Training Hub · 結構骨架"
+    title="意識與訓練中心"
+    description="左側為訓練分類，右側為課程卡片式佈局。卡片標題、摘要與進度皆為佔位符。"
+  />
+
+  <div class="grid gap-4 lg:grid-cols-[240px_minmax(0,1fr)]" data-training-hub>
+    <aside class="rounded-xl bg-surface p-3 shadow-[var(--shadow-border)]" aria-label="訓練分類">
+      <p class="mb-2 px-2 font-mono text-[11px] font-semibold uppercase tracking-[0.12em] text-faint">
+        分類
+      </p>
+      <div class="flex gap-2 overflow-x-auto pb-2 lg:flex-col lg:overflow-visible lg:pb-0">
+        <button
+          type="button"
+          class="min-h-11 shrink-0 rounded-md bg-accent px-3 text-left text-sm font-medium text-accent-fg"
+          data-train-cat="all"
+          aria-pressed="true"
+        >
+          全部分類槽位
+        </button>
+        {
+          categories.map((cat) => (
+            <button
+              type="button"
+              class="min-h-11 shrink-0 rounded-md bg-subtle px-3 text-left text-sm font-medium text-ink"
+              data-train-cat={cat}
+              aria-pressed="false"
+            >
+              {cat}
+            </button>
+          ))
+        }
+      </div>
+      <p class="mt-3 px-2 text-xs text-faint">此區塊為佔位符，後續填入真實訓練分類。</p>
+    </aside>
+
+    <section aria-label="課程卡片">
+      <div class="grid gap-4 sm:grid-cols-2">
+        {
+          courses.map((course) => (
+            <article
+              class="rounded-xl bg-surface p-4 shadow-[var(--shadow-border)]"
+              data-train-card={course.data.category}
+            >
+              <span class="chip bg-accent-soft text-accent">PLACEHOLDER</span>
+              <h2 class="mt-3 text-base font-semibold">{course.data.title}</h2>
+              <p class="mt-1 text-sm text-muted">
+                {course.data.summary ?? "此處放置訓練課程卡片說明"}
+              </p>
+              <p class="mt-3 font-mono text-[11px] text-faint">
+                owner: {course.data.owner} · version {course.data.version}
+              </p>
+              <div class="mt-4">
+                <div class="mb-1 flex justify-between text-xs text-faint">
+                  <span>此處放置完成進度</span>
+                  <span class="font-mono">— %</span>
+                </div>
+                <div class="h-2 overflow-hidden rounded-full bg-subtle" aria-hidden="true">
+                  <div class="h-full w-1/3 bg-accent/30"></div>
+                </div>
+              </div>
+            </article>
+          ))
+        }
+      </div>
+    </section>
+  </div>
+</BaseLayout>

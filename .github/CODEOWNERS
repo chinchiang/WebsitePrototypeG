@@ -1,0 +1,14 @@
+# 架構先行、內容後補
+# owner 欄位需與區塊負責人一致。目前使用佔位帳號。
+# 後續將 @TBD-* 換成實際 GitHub team / user。
+
+* @TBD-platform
+
+/src/content/policies/ @TBD-grc
+/src/content/training/ @TBD-training
+/src/content/resources/ @TBD-secops
+
+/.github/ @TBD-platform
+/src/layouts/ @TBD-platform
+/src/components/ @TBD-platform
+/scripts/ @TBD-platform

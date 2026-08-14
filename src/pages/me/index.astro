@@ -1,0 +1,34 @@
+---
+/**
+ * 架構先行、內容後補
+ * 個人儀表板（登入後）：只預留登入狀態與個人槽位，不實作真實帳號。
+ */
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PageHeader from "../../components/PageHeader.astro";
+import Placeholder from "../../components/Placeholder.astro";
+
+const widgets = [
+  "此處放置登入狀態摘要",
+  "此處放置指派給我的政策清單",
+  "此處放置我的訓練進度",
+  "此處放置我的通報紀錄",
+  "此處放置待我確認的項目",
+  "此處放置廠區／角色對應權限說明",
+];
+---
+
+<BaseLayout title="個人儀表板" current="me">
+  <PageHeader
+    kicker="My Dashboard · 登入後結構"
+    title="個人儀表板"
+    description="此頁預留給登入後的個人視圖。目前沒有真實身分驗證；頂部角色切換僅改變佔位區塊顯示。"
+  />
+
+  <div class="mb-6 rounded-xl border border-border bg-accent-soft px-4 py-3 text-sm text-accent">
+    登入狀態槽位：未連接帳號系統 · 此區塊為佔位符，後續填入真實內容
+  </div>
+
+  <div class="grid gap-4 md:grid-cols-2">
+    {widgets.map((label) => <Placeholder label={label} class="min-h-[140px]" />)}
+  </div>
+</BaseLayout>

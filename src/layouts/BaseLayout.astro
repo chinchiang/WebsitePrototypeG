@@ -1,0 +1,55 @@
+---
+/**
+ * 架構先行、內容後補
+ * 全站版面骨架。內容區由各頁以佔位符填入。
+ */
+import Footer from "../components/Footer.astro";
+import Header from "../components/Header.astro";
+import "../styles/global.css";
+
+interface Props {
+  title: string;
+  description?: string;
+  current: string;
+}
+
+const {
+  title,
+  description = "製造業集團 IT 資安單位入口網站骨架。架構先行、內容後補。",
+  current,
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <meta name="robots" content="noindex, nofollow" />
+    <link rel="icon" href={`${import.meta.env.BASE_URL}favicon.svg`} type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&family=Noto+Sans+TC:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <title>{title} · 資安入口</title>
+  </head>
+  <body class="flex min-h-dvh flex-col bg-bg text-ink">
+    <a
+      href="#main"
+      class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-accent focus:px-3 focus:py-2 focus:text-accent-fg"
+    >
+      跳至主要內容
+    </a>
+    <Header current={current} />
+    <main id="main" data-pagefind-body class="mx-auto w-full max-w-7xl flex-1 px-4 py-6 md:px-6 md:py-8">
+      <slot />
+    </main>
+    <Footer />
+    <script>
+      import "../scripts/portal.ts";
+    </script>
+  </body>
+</html>

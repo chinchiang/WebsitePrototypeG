@@ -1,0 +1,110 @@
+---
+/**
+ * 架構先行、內容後補
+ * 事件通報頁：類型大按鈕 + 表單區 + SOP 流程圖佔位。
+ * 不填寫真實 SOP 步驟文字。
+ */
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PageHeader from "../../components/PageHeader.astro";
+import Placeholder from "../../components/Placeholder.astro";
+
+const types = [
+  { id: "type-a", label: "此處放置事件類型 A" },
+  { id: "type-b", label: "此處放置事件類型 B" },
+  { id: "type-c", label: "此處放置事件類型 C" },
+  { id: "type-d", label: "此處放置事件類型 D" },
+];
+
+const sopSteps = [
+  "此處放置 SOP 步驟 1",
+  "此處放置 SOP 步驟 2",
+  "此處放置 SOP 步驟 3",
+  "此處放置 SOP 步驟 4",
+];
+---
+
+<BaseLayout title="事件通報" current="incident">
+  <PageHeader
+    kicker="Incident Reporting · 結構骨架"
+    title="事件通報頁"
+    description="本頁僅建立通報流程版面。類型名稱、表單欄位說明與 SOP 節點皆為佔位符，不會送出真實資料。"
+  />
+
+  <div class="grid gap-6 lg:grid-cols-[minmax(0,1fr)_320px]" data-incident-form>
+    <div class="space-y-6">
+      <!-- 事件類型大按鈕選擇區 -->
+      <section aria-labelledby="incident-types">
+        <h2 id="incident-types" class="mb-3 text-sm font-semibold">事件類型選擇區</h2>
+        <div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
+          {
+            types.map((type) => (
+              <button
+                type="button"
+                class="min-h-[72px] rounded-xl border border-border bg-surface px-4 py-3 text-left text-sm font-medium shadow-[var(--shadow-border)]"
+                data-incident-type={type.label}
+                aria-pressed="false"
+              >
+                <span class="chip mb-2 bg-accent-soft text-accent">PLACEHOLDER</span>
+                <span class="block">{type.label}</span>
+              </button>
+            ))
+          }
+        </div>
+      </section>
+
+      <!-- 表單區 -->
+      <section class="rounded-xl bg-surface p-4 shadow-[var(--shadow-border)] md:p-5" aria-labelledby="incident-form">
+        <h2 id="incident-form" class="text-sm font-semibold">表單區</h2>
+        <p class="mt-1 text-sm text-muted">
+          已選類型：<span data-selected-type>此處放置事件類型名稱</span>
+        </p>
+        <form class="mt-4 grid gap-4" action="#" method="post" onsubmit="return false;">
+          <label class="grid gap-1 text-sm">
+            <span>此處放置欄位：發生時間</span>
+            <input class="h-11 rounded-md border border-border bg-bg px-3" type="datetime-local" name="occurredAt" disabled />
+          </label>
+          <label class="grid gap-1 text-sm">
+            <span>此處放置欄位：發生廠區／範圍</span>
+            <input class="h-11 rounded-md border border-border bg-bg px-3" type="text" name="scope" placeholder="PLACEHOLDER · scope" disabled />
+          </label>
+          <label class="grid gap-1 text-sm">
+            <span>此處放置欄位：狀況描述</span>
+            <textarea class="min-h-28 rounded-md border border-border bg-bg px-3 py-2" name="description" placeholder="此處放置狀況描述" disabled></textarea>
+          </label>
+          <label class="grid gap-1 text-sm">
+            <span>此處放置欄位：聯絡方式（勿填真實個資）</span>
+            <input class="h-11 rounded-md border border-border bg-bg px-3" type="text" name="contact" placeholder="security@example.internal" disabled />
+          </label>
+          <p class="text-xs text-faint">表單為結構預留，已停用送出。此區塊為佔位符，後續填入真實內容。</p>
+          <button type="button" class="h-11 rounded-md bg-accent px-4 text-sm font-medium text-accent-fg" disabled>
+            此處放置送出按鈕
+          </button>
+        </form>
+      </section>
+    </div>
+
+    <!-- SOP 流程圖佔位 -->
+    <aside aria-labelledby="sop-flow">
+      <h2 id="sop-flow" class="mb-3 text-sm font-semibold">SOP 流程圖佔位</h2>
+      <div class="rounded-xl bg-surface p-4 shadow-[var(--shadow-border)]">
+        <span class="chip bg-accent-soft text-accent">PLACEHOLDER</span>
+        <ol class="mt-4 space-y-0">
+          {
+            sopSteps.map((step, index) => (
+              <li class="relative pl-8">
+                {index < sopSteps.length - 1 && (
+                  <span class="absolute left-[11px] top-7 h-[calc(100%-8px)] w-px bg-border-strong" />
+                )}
+                <span class="absolute left-0 top-0 grid size-6 place-items-center rounded-full bg-accent-soft font-mono text-[11px] font-semibold text-accent">
+                  {index + 1}
+                </span>
+                <p class="min-h-11 pb-5 text-sm">{step}</p>
+              </li>
+            ))
+          }
+        </ol>
+        <Placeholder label="此處放置 SOP 補充說明" class="mt-2" />
+      </div>
+    </aside>
+  </div>
+</BaseLayout>

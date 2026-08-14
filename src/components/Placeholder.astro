@@ -1,0 +1,26 @@
+---
+/**
+ * 架構先行、內容後補
+ * 所有內容區統一使用此區塊，避免誤填真實或虛構資料。
+ */
+interface Props {
+  label: string;
+  hint?: string;
+  class?: string;
+}
+
+const { label, hint = "此區塊為佔位符，後續填入真實內容", class: className = "" } =
+  Astro.props;
+---
+
+<section
+  class:list={["placeholder-block rounded-lg p-4 md:p-5", className]}
+  data-placeholder="true"
+>
+  <div class="mb-2 flex flex-wrap items-center gap-2">
+    <span class="chip bg-accent-soft text-accent">PLACEHOLDER</span>
+    <span class="text-xs text-faint">{hint}</span>
+  </div>
+  <p class="text-sm font-medium text-ink md:text-base">{label}</p>
+  <slot />
+</section>

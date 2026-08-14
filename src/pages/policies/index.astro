@@ -1,0 +1,126 @@
+---
+/**
+ * 架構先行、內容後補
+ * 政策文件庫：左側分類樹 + 右側列表 + 詳情展開。
+ * 文件標題僅為槽位說明，不是真實政策名稱。
+ */
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PageHeader from "../../components/PageHeader.astro";
+import { routes, withBase } from "../../lib/paths";
+
+const docs = (await getCollection("policies")).sort((a, b) => a.id.localeCompare(b.id));
+const categories = [...new Set(docs.map((d) => d.data.category))];
+---
+
+<BaseLayout title="政策文件庫" current="policies">
+  <PageHeader
+    kicker="Policies Library · 結構骨架"
+    title="政策文件庫"
+    description="左側為分類樹狀選單，中間為文件列表，右側為詳情展開區。所有條目皆為佔位槽位。"
+  />
+
+  <div
+    class="grid gap-4 lg:grid-cols-[240px_minmax(0,1fr)_minmax(0,1fr)]"
+    data-policy-explorer
+  >
+    <!-- 左側分類樹狀選單 -->
+    <aside class="rounded-xl bg-surface p-3 shadow-[var(--shadow-border)]" aria-label="政策分類">
+      <p class="mb-2 px-2 font-mono text-[11px] font-semibold uppercase tracking-[0.12em] text-faint">
+        分類樹狀選單
+      </p>
+      <div class="flex gap-2 overflow-x-auto pb-2 lg:flex-col lg:overflow-visible lg:pb-0">
+        <button
+          type="button"
+          class="min-h-11 shrink-0 rounded-md bg-accent px-3 text-left text-sm font-medium text-accent-fg"
+          data-policy-cat="all"
+          aria-pressed="true"
+        >
+          全部分類槽位
+        </button>
+        {
+          categories.map((cat) => (
+            <button
+              type="button"
+              class="min-h-11 shrink-0 rounded-md bg-subtle px-3 text-left text-sm font-medium text-ink"
+              data-policy-cat={cat}
+              aria-pressed="false"
+            >
+              {cat}
+            </button>
+          ))
+        }
+      </div>
+      <p class="mt-3 px-2 text-xs text-faint">此區塊為佔位符，後續填入真實分類名稱。</p>
+    </aside>
+
+    <!-- 右側列表區 -->
+    <section class="rounded-xl bg-surface p-3 shadow-[var(--shadow-border)]" aria-label="政策列表">
+      <p class="mb-2 px-2 font-mono text-[11px] font-semibold uppercase tracking-[0.12em] text-faint">
+        文件列表區
+      </p>
+      <ul class="space-y-1">
+        {
+          docs.map((doc) => (
+            <li data-policy-item={doc.data.category}>
+              <button
+                type="button"
+                class="flex w-full min-h-14 flex-col rounded-md px-3 py-2 text-left"
+                data-policy-id={doc.id}
+                aria-selected="false"
+              >
+                <span class="text-sm font-medium">{doc.data.title}</span>
+                <span class="font-mono text-[11px] text-faint">
+                  version {doc.data.version} · owner: {doc.data.owner}
+                </span>
+              </button>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+
+    <!-- 詳情展開區 -->
+    <section class="rounded-xl bg-surface p-4 shadow-[var(--shadow-border)]" aria-label="政策詳情">
+      <p class="mb-3 font-mono text-[11px] font-semibold uppercase tracking-[0.12em] text-faint">
+        詳情展開區
+      </p>
+      {
+        docs.map((doc) => (
+          <article hidden data-policy-detail={doc.id} class="space-y-3">
+            <span class="chip bg-accent-soft text-accent">PLACEHOLDER</span>
+            <h2 class="text-lg font-semibold">{doc.data.title}</h2>
+            <dl class="grid grid-cols-2 gap-2 text-sm">
+              <div>
+                <dt class="text-faint">version</dt>
+                <dd class="font-mono">{doc.data.version}</dd>
+              </div>
+              <div>
+                <dt class="text-faint">owner</dt>
+                <dd class="font-mono">{doc.data.owner}</dd>
+              </div>
+              <div>
+                <dt class="text-faint">effectiveDate</dt>
+                <dd class="font-mono">{doc.data.effectiveDate}</dd>
+              </div>
+              <div>
+                <dt class="text-faint">nextReviewDate</dt>
+                <dd class="font-mono">{doc.data.nextReviewDate}</dd>
+              </div>
+              <div class="col-span-2">
+                <dt class="text-faint">scope</dt>
+                <dd class="font-mono">{doc.data.scope.join(" / ")}</dd>
+              </div>
+            </dl>
+            <div class="placeholder-block rounded-md p-4 text-sm text-muted">
+              此處放置政策全文。此區塊為佔位符，後續填入真實內容。
+            </div>
+            <a class="inline-flex h-11 items-center text-sm font-medium text-accent" href={withBase(`${routes.policies}${doc.id}/`)}>
+              開啟獨立頁面槽位
+            </a>
+          </article>
+        ))
+      }
+    </section>
+  </div>
+</BaseLayout>

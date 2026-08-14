@@ -1,0 +1,3 @@
+# Internal portal — do not index.
+User-agent: *
+Disallow: /

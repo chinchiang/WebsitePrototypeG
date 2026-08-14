@@ -1,0 +1,15 @@
+---
+/**
+ * 架構先行、內容後補
+ */
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { routes, withBase } from "../lib/paths";
+---
+
+<BaseLayout title="頁面不存在" current="home">
+  <h1 class="text-2xl font-semibold">此處無對應頁面</h1>
+  <p class="mt-2 text-sm text-muted">結構骨架尚未建立此路徑。請返回既有導航頁面。</p>
+  <a class="mt-6 inline-flex h-11 items-center text-sm font-medium text-accent" href={withBase(routes.home)}>
+    返回首頁
+  </a>
+</BaseLayout>

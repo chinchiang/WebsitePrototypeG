@@ -1,0 +1,32 @@
+{
+  "name": "security-portal",
+  "private": true,
+  "type": "module",
+  "description": "製造業集團 IT 資安單位入口網站骨架（架構先行、內容後補）",
+  "scripts": {
+    "dev": "astro dev --host 0.0.0.0 --port 8080",
+    "start": "astro dev --host 0.0.0.0 --port 8080",
+    "build": "node scripts/validate-frontmatter.mjs && astro build",
+    "preview": "astro preview --host 0.0.0.0 --port 8080",
+    "typecheck": "astro check",
+    "pagefind": "pagefind --site dist",
+    "validate:frontmatter": "node scripts/validate-frontmatter.mjs",
+    "check:links": "node scripts/check-links.mjs",
+    "ci": "npm run validate:frontmatter && npm run build && npm run pagefind && npm run check:links"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "dependencies": {
+    "@tailwindcss/vite": "^4.3.3",
+    "astro": "^7.2.2",
+    "tailwindcss": "^4.3.3",
+    "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.10",
+    "@types/node": "^22.16.5",
+    "pagefind": "^1.5.2",
+    "typescript": "~5.9.0"
+  }
+}

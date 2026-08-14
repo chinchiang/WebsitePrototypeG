@@ -1,0 +1,40 @@
+---
+/**
+ * 架構先行、內容後補
+ * 頁尾僅放置結構說明與聯絡入口，不含真實分機或人員姓名。
+ */
+import { routes, withBase } from "../lib/paths";
+---
+
+<footer class="mt-auto border-t border-border bg-surface">
+  <div class="mx-auto grid max-w-7xl gap-6 px-4 py-8 md:grid-cols-3 md:px-6">
+    <div>
+      <p class="text-sm font-semibold text-ink">製造業集團 IT 資安入口</p>
+      <p class="mt-2 text-sm text-muted">
+        架構先行、內容後補。本站目前僅提供導航、版面與佔位符。
+      </p>
+    </div>
+    <div>
+      <p class="font-mono text-[11px] font-semibold uppercase tracking-[0.12em] text-faint">
+        結構連結
+      </p>
+      <ul class="mt-2 space-y-1 text-sm">
+        <li><a class="text-muted hover:text-ink" href={withBase(routes.policies)}>政策文件庫</a></li>
+        <li><a class="text-muted hover:text-ink" href={withBase(routes.incident)}>事件通報</a></li>
+        <li><a class="text-muted hover:text-ink" href={withBase(routes.contact)}>聯絡與組織</a></li>
+      </ul>
+    </div>
+    <div>
+      <p class="font-mono text-[11px] font-semibold uppercase tracking-[0.12em] text-faint">
+        佔位聯絡
+      </p>
+      <p class="mt-2 text-sm text-muted">owner: TBD</p>
+      <p class="text-sm text-muted">mailbox: security@example.internal</p>
+    </div>
+  </div>
+  <div class="border-t border-border">
+    <p class="mx-auto max-w-7xl px-4 py-3 font-mono text-[11px] text-faint md:px-6">
+      內部使用 · 禁止放入實際政策全文、主機名稱、IP 或個人資料
+    </p>
+  </div>
+</footer>

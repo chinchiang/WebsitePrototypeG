@@ -1,0 +1,21 @@
+---
+/**
+ * 架構先行、內容後補
+ * 頁首只標示結構用途，不放置真實公告或政策摘要。
+ */
+interface Props {
+  kicker: string;
+  title: string;
+  description: string;
+}
+
+const { kicker, title, description } = Astro.props;
+---
+
+<header class="mb-6 md:mb-8">
+  <p class="mb-2 font-mono text-[11px] font-semibold uppercase tracking-[0.14em] text-faint">
+    {kicker}
+  </p>
+  <h1 class="text-2xl font-semibold tracking-tight text-ink md:text-3xl">{title}</h1>
+  <p class="mt-2 max-w-2xl text-sm text-muted md:text-base">{description}</p>
+</header>

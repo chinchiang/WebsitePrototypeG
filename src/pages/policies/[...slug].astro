@@ -1,0 +1,77 @@
+---
+/**
+ * 架構先行、內容後補
+ * 單份政策頁只呈現治理欄位與全文佔位，不生成假政策文字。
+ */
+import { getCollection, render } from "astro:content";
+import type { CollectionEntry } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PageHeader from "../../components/PageHeader.astro";
+import { routes, withBase } from "../../lib/paths";
+
+export async function getStaticPaths() {
+  const docs = await getCollection("policies");
+  return docs.map((doc) => ({
+    params: { slug: doc.id },
+    props: { doc },
+  }));
+}
+
+interface Props {
+  doc: CollectionEntry<"policies">;
+}
+
+const { doc } = Astro.props;
+const { Content } = await render(doc);
+---
+
+<BaseLayout title={doc.data.title} current="policies">
+  <p class="mb-4">
+    <a class="text-sm text-muted hover:text-ink" href={withBase(routes.policies)}>返回政策文件庫</a>
+  </p>
+  <PageHeader
+    kicker={`${doc.data.category} · 結構骨架`}
+    title={doc.data.title}
+    description="此頁為文件詳情槽位。治理欄位已預留，正文為佔位符。"
+  />
+
+  <div class="grid gap-4 lg:grid-cols-[minmax(0,1fr)_280px]">
+    <article class="rounded-xl bg-surface p-5 shadow-[var(--shadow-border)]">
+      <span class="chip bg-accent-soft text-accent">PLACEHOLDER</span>
+      <div class="prose mt-4 max-w-none text-sm text-muted">
+        <Content />
+      </div>
+    </article>
+    <aside class="rounded-xl bg-surface p-5 shadow-[var(--shadow-border)]">
+      <p class="mb-3 font-mono text-[11px] font-semibold uppercase tracking-[0.12em] text-faint">
+        治理欄位
+      </p>
+      <dl class="space-y-2 text-sm">
+        <div>
+          <dt class="text-faint">version</dt>
+          <dd class="font-mono">{doc.data.version}</dd>
+        </div>
+        <div>
+          <dt class="text-faint">effectiveDate</dt>
+          <dd class="font-mono">{doc.data.effectiveDate}</dd>
+        </div>
+        <div>
+          <dt class="text-faint">nextReviewDate</dt>
+          <dd class="font-mono">{doc.data.nextReviewDate}</dd>
+        </div>
+        <div>
+          <dt class="text-faint">scope</dt>
+          <dd class="font-mono">{doc.data.scope.join(" / ")}</dd>
+        </div>
+        <div>
+          <dt class="text-faint">owner</dt>
+          <dd class="font-mono">{doc.data.owner}</dd>
+        </div>
+        <div>
+          <dt class="text-faint">status</dt>
+          <dd class="font-mono">{doc.data.status}</dd>
+        </div>
+      </dl>
+    </aside>
+  </div>
+</BaseLayout>

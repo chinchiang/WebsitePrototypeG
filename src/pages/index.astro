@@ -1,0 +1,108 @@
+---
+/**
+ * 架構先行、內容後補
+ * 首頁 / Dashboard：緊急警報、快速行動、個人狀態、角色推薦。
+ * 禁止填入真實或虛構公告內容。
+ */
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PageHeader from "../components/PageHeader.astro";
+import Placeholder from "../components/Placeholder.astro";
+import Icon from "../components/Icon.astro";
+import { routes, withBase } from "../lib/paths";
+
+const actions = [
+  { href: routes.incident, label: "此處放置快速行動：事件通報", icon: "alert" as const },
+  { href: routes.policies, label: "此處放置快速行動：查閱政策", icon: "file" as const },
+  { href: routes.training, label: "此處放置快速行動：前往訓練", icon: "book" as const },
+  { href: routes.resources, label: "此處放置快速行動：開啟工具", icon: "tool" as const },
+];
+
+const statusSlots = [
+  "此處放置個人狀態：訓練完成率",
+  "此處放置個人狀態：待確認政策數",
+  "此處放置個人狀態：待處理通報數",
+  "此處放置個人狀態：上次登入摘要",
+];
+
+const roleSlots = [
+  { role: "employee", label: "一般員工推薦槽位" },
+  { role: "operator", label: "廠區操作員推薦槽位" },
+  { role: "engineer", label: "工程師推薦槽位" },
+  { role: "manager", label: "管理層推薦槽位" },
+  { role: "supplier", label: "供應商推薦槽位" },
+];
+---
+
+<BaseLayout title="首頁" current="home">
+  <PageHeader
+    kicker="Dashboard · 結構骨架"
+    title="資安入口首頁"
+    description="此頁只建立儀表板版面。所有警報、狀態與推薦內容均為佔位符，後續填入真實內容。"
+  />
+
+  <!-- 緊急警報橫幅佔位 -->
+  <aside
+    class="mb-6 rounded-xl border border-danger/30 bg-danger-soft px-4 py-4 md:px-5"
+    role="status"
+  >
+    <div class="mb-2 flex flex-wrap items-center gap-2">
+      <span class="chip bg-danger text-accent-fg">PLACEHOLDER</span>
+      <span class="font-mono text-[11px] uppercase tracking-[0.12em] text-danger">
+        緊急警報橫幅
+      </span>
+    </div>
+    <p class="text-base font-semibold text-ink">此處放置緊急警報標題</p>
+    <p class="mt-1 text-sm text-muted">此處放置緊急警報內文與生效範圍。此區塊為佔位符，後續填入真實內容。</p>
+  </aside>
+
+  <!-- 快速行動按鈕區 -->
+  <section class="mb-8" aria-labelledby="quick-actions">
+    <h2 id="quick-actions" class="mb-3 text-sm font-semibold text-ink">快速行動區</h2>
+    <div class="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
+      {
+        actions.map((action) => (
+          <a
+            href={withBase(action.href)}
+            class="flex min-h-18 items-center gap-3 rounded-xl bg-surface px-4 py-3 shadow-[var(--shadow-border)] transition-[box-shadow] duration-150"
+          >
+            <span class="grid size-10 place-items-center rounded-md bg-accent-soft text-accent">
+              <Icon name={action.icon} />
+            </span>
+            <span class="text-sm font-medium text-ink">{action.label}</span>
+          </a>
+        ))
+      }
+    </div>
+  </section>
+
+  <div class="grid gap-6 lg:grid-cols-5">
+    <!-- 個人狀態摘要區 -->
+    <section class="lg:col-span-2" aria-labelledby="status-summary">
+      <h2 id="status-summary" class="mb-3 text-sm font-semibold text-ink">個人狀態摘要區</h2>
+      <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-1">
+        {
+          statusSlots.map((slot) => (
+            <Placeholder label={slot} class="min-h-24" />
+          ))
+        }
+      </div>
+    </section>
+
+    <!-- 角色推薦內容區 -->
+    <section class="lg:col-span-3" aria-labelledby="role-reco">
+      <div class="mb-3 flex items-end justify-between gap-3">
+        <h2 id="role-reco" class="text-sm font-semibold text-ink">角色推薦內容區</h2>
+        <p class="font-mono text-[11px] text-faint">依頂部角色切換顯示對應槽位</p>
+      </div>
+      <div class="grid gap-3">
+        {
+          roleSlots.map((slot) => (
+            <div data-for-role={slot.role} hidden={slot.role !== "employee"}>
+              <Placeholder label={`此處放置${slot.label}（卡片／清單）`} />
+            </div>
+          ))
+        }
+      </div>
+    </section>
+  </div>
+</BaseLayout>

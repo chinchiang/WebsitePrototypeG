@@ -1,0 +1,73 @@
+---
+/**
+ * 架構先行、內容後補
+ * 聯絡與組織：組織圖、窗口槽位、表單。禁止填入真實姓名、分機或個資。
+ */
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PageHeader from "../../components/PageHeader.astro";
+import Placeholder from "../../components/Placeholder.astro";
+
+const desks = [
+  { title: "此處放置窗口名稱（GRC）", mail: "grc@example.internal", owner: "TBD" },
+  { title: "此處放置窗口名稱（SOC）", mail: "soc@example.internal", owner: "TBD" },
+  { title: "此處放置窗口名稱（OT 資安）", mail: "ot-sec@example.internal", owner: "TBD" },
+  { title: "此處放置窗口名稱（供應商窗口）", mail: "vendor-sec@example.internal", owner: "TBD" },
+];
+---
+
+<BaseLayout title="聯絡與組織" current="contact">
+  <PageHeader
+    kicker="Contact · 結構骨架"
+    title="聯絡與組織"
+    description="組織圖、窗口與表單皆為佔位。聯絡網域僅能使用 example.internal，人員以 owner: TBD 表示。"
+  />
+
+  <div class="grid gap-6 lg:grid-cols-[minmax(0,1fr)_340px]">
+    <div class="space-y-6">
+      <section>
+        <h2 class="mb-3 text-sm font-semibold">組織結構佔位</h2>
+        <Placeholder label="此處放置組織圖／層級說明">
+          <div class="mt-4 grid gap-3 sm:grid-cols-3">
+            <div class="rounded-md bg-surface p-3 text-center text-sm">此處放置上層單位</div>
+            <div class="rounded-md bg-surface p-3 text-center text-sm">此處放置資安單位</div>
+            <div class="rounded-md bg-surface p-3 text-center text-sm">此處放置廠區窗口</div>
+          </div>
+        </Placeholder>
+      </section>
+
+      <section>
+        <h2 class="mb-3 text-sm font-semibold">窗口清單佔位</h2>
+        <div class="grid gap-3 sm:grid-cols-2">
+          {
+            desks.map((desk) => (
+              <article class="rounded-xl bg-surface p-4 shadow-[var(--shadow-border)]">
+                <span class="chip bg-accent-soft text-accent">PLACEHOLDER</span>
+                <h3 class="mt-3 text-sm font-semibold">{desk.title}</h3>
+                <p class="mt-1 font-mono text-[12px] text-muted">{desk.mail}</p>
+                <p class="font-mono text-[12px] text-faint">owner: {desk.owner}</p>
+              </article>
+            ))
+          }
+        </div>
+      </section>
+    </div>
+
+    <aside class="rounded-xl bg-surface p-4 shadow-[var(--shadow-border)] md:p-5">
+      <h2 class="text-sm font-semibold">聯絡表單佔位</h2>
+      <p class="mt-1 text-xs text-faint">此區塊為佔位符，後續填入真實內容。表單已停用。</p>
+      <form class="mt-4 grid gap-3" action="#" method="post" onsubmit="return false;">
+        <label class="grid gap-1 text-sm">
+          <span>此處放置欄位：主旨</span>
+          <input class="h-11 rounded-md border border-border bg-bg px-3" type="text" disabled placeholder="PLACEHOLDER" />
+        </label>
+        <label class="grid gap-1 text-sm">
+          <span>此處放置欄位：說明</span>
+          <textarea class="min-h-28 rounded-md border border-border bg-bg px-3 py-2" disabled placeholder="此處放置說明"></textarea>
+        </label>
+        <button type="button" class="h-11 rounded-md bg-accent text-sm font-medium text-accent-fg" disabled>
+          此處放置送出按鈕
+        </button>
+      </form>
+    </aside>
+  </div>
+</BaseLayout>

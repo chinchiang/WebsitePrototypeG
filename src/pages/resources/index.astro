@@ -1,0 +1,66 @@
+---
+/**
+ * 架構先行、內容後補
+ * 資源與工具中心：分類 + 工具卡片槽位。
+ */
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PageHeader from "../../components/PageHeader.astro";
+
+const items = (await getCollection("resources")).sort((a, b) => a.id.localeCompare(b.id));
+const categories = [...new Set(items.map((i) => i.data.category))];
+---
+
+<BaseLayout title="資源與工具中心" current="resources">
+  <PageHeader
+    kicker="Resources · 結構骨架"
+    title="資源與工具中心"
+    description="此頁只建立工具與文件入口的卡片佈局。名稱、連結與說明皆為佔位符，主機一律使用 example.internal。"
+  />
+
+  <div data-resource-hub>
+    <div class="mb-4 flex gap-2 overflow-x-auto pb-1">
+      <button
+        type="button"
+        class="min-h-11 shrink-0 rounded-md bg-accent px-3 text-sm font-medium text-accent-fg"
+        data-res-cat="all"
+        aria-pressed="true"
+      >
+        全部分類槽位
+      </button>
+      {
+        categories.map((cat) => (
+          <button
+            type="button"
+            class="min-h-11 shrink-0 rounded-md bg-subtle px-3 text-sm font-medium text-ink"
+            data-res-cat={cat}
+            aria-pressed="false"
+          >
+            {cat}
+          </button>
+        ))
+      }
+    </div>
+
+    <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      {
+        items.map((item) => (
+          <article
+            class="rounded-xl bg-surface p-4 shadow-[var(--shadow-border)]"
+            data-res-card={item.data.category}
+          >
+            <span class="chip bg-accent-soft text-accent">PLACEHOLDER</span>
+            <h2 class="mt-3 text-base font-semibold">{item.data.title}</h2>
+            <p class="mt-1 text-sm text-muted">
+              {item.data.summary ?? "此處放置工具或資源說明"}
+            </p>
+            <p class="mt-3 font-mono text-[11px] text-faint">
+              host: example.internal · owner: {item.data.owner}
+            </p>
+            <p class="mt-4 text-sm text-accent">此處放置工具連結（尚未啟用）</p>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</BaseLayout>

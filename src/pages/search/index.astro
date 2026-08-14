@@ -1,0 +1,46 @@
+---
+/**
+ * 架構先行、內容後補
+ * Pagefind 搜尋容器。正式建置並產生索引後才載入 UI，避免開發模式 404。
+ */
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PageHeader from "../../components/PageHeader.astro";
+
+const pagefindHref = `${import.meta.env.BASE_URL}pagefind/pagefind-ui.js`;
+const pagefindCss = `${import.meta.env.BASE_URL}pagefind/pagefind-ui.css`;
+const enablePagefind = import.meta.env.PROD;
+---
+
+<BaseLayout title="站內搜尋" current="search">
+  <PageHeader
+    kicker="Search · Pagefind"
+    title="站內搜尋"
+    description="此處放置 Pagefind 搜尋介面。正式建置並產生索引後才可查詢。開發預覽僅顯示佔位。"
+  />
+
+  <div class="rounded-xl bg-surface p-4 shadow-[var(--shadow-border)] md:p-6">
+    <span class="chip bg-accent-soft text-accent">PLACEHOLDER</span>
+    {enablePagefind && <link rel="stylesheet" href={pagefindCss} />}
+    <div id="search" class="mt-4"></div>
+    <p id="search-fallback" class="mt-3 text-sm text-muted">
+      此區塊為搜尋佔位符。若未看到搜尋框，表示尚未執行 Pagefind 索引產生。
+    </p>
+  </div>
+</BaseLayout>
+
+{
+  enablePagefind && (
+    <script is:inline define:vars={{ pagefindHref }}>
+      const script = document.createElement("script");
+      script.src = pagefindHref;
+      script.onload = () => {
+        if (window.PagefindUI) {
+          new window.PagefindUI({ element: "#search", showSubResults: true });
+          const fallback = document.getElementById("search-fallback");
+          if (fallback) fallback.hidden = true;
+        }
+      };
+      document.body.appendChild(script);
+    </script>
+  )
+}

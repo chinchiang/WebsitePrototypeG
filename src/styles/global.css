@@ -1,0 +1,109 @@
+/* 架構先行、內容後補 — 設計權杖集中於此，元件不寫死色碼。 */
+@import "tailwindcss";
+
+@theme {
+  --color-bg: #f2f3f6;
+  --color-surface: #ffffff;
+  --color-subtle: #e7e9ee;
+  --color-ink: #161b24;
+  --color-muted: #5b6370;
+  --color-faint: #7c8491;
+  --color-accent: #1c3354;
+  --color-accent-fg: #f6f7f9;
+  --color-accent-soft: #e6edf5;
+  --color-danger: #8f2433;
+  --color-danger-soft: #f6e8ea;
+  --color-warn: #7a6118;
+  --color-warn-soft: #f4eedc;
+  --color-ok: #245c45;
+  --color-ok-soft: #e4f0ea;
+  --color-border: color-mix(in oklab, var(--color-ink) 12%, transparent);
+  --color-border-strong: color-mix(in oklab, var(--color-ink) 22%, transparent);
+
+  --font-sans: "IBM Plex Sans", "Noto Sans TC", "PingFang TC", "Microsoft JhengHei",
+    "Segoe UI", system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+
+  --radius-xs: 4px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+
+  --shadow-border: 0 0 0 1px color-mix(in oklab, var(--color-ink) 8%, transparent),
+    0 1px 2px -1px color-mix(in oklab, var(--color-ink) 6%, transparent),
+    0 2px 6px 0 color-mix(in oklab, var(--color-ink) 4%, transparent);
+}
+
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background: var(--color-bg);
+    color: var(--color-ink);
+  }
+
+  body {
+    font-family: var(--font-sans);
+    line-height: 1.55;
+    min-height: 100dvh;
+  }
+
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+    letter-spacing: -0.025em;
+    line-height: 1.2;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@layer components {
+  .placeholder-block {
+    border: 1px dashed color-mix(in oklab, var(--color-ink) 28%, transparent);
+    background: repeating-linear-gradient(
+      -45deg,
+      transparent,
+      transparent 8px,
+      color-mix(in oklab, var(--color-ink) 3%, transparent) 8px,
+      color-mix(in oklab, var(--color-ink) 3%, transparent) 9px
+    );
+  }
+
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    border-radius: 999px;
+    padding: 0.15rem 0.55rem;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    font-family: var(--font-mono);
+  }
+}

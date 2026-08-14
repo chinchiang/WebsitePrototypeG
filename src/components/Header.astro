@@ -1,0 +1,115 @@
+---
+/**
+ * 架構先行、內容後補
+ * 固定頂部導航：僅結構連結，不含真實公告標題。
+ */
+import { navItems } from "../lib/nav";
+import { routes, withBase } from "../lib/paths";
+import Icon from "./Icon.astro";
+import RoleSwitcher from "./RoleSwitcher.astro";
+
+interface Props {
+  current: string;
+}
+
+const { current } = Astro.props;
+---
+
+<header
+  class="sticky top-0 z-40 border-b border-border bg-surface/95 backdrop-blur-sm"
+>
+  <div class="h-[3px] bg-accent"></div>
+  <div class="mx-auto flex max-w-7xl items-center gap-3 px-4 py-3 md:px-6">
+    <a
+      href={withBase(routes.home)}
+      class="flex min-h-11 items-center gap-2.5 text-ink"
+      aria-label="資安入口首頁"
+    >
+      <span
+        class="grid size-9 place-items-center rounded-md bg-accent text-accent-fg"
+      >
+        <Icon name="shield" size={18} />
+      </span>
+      <span class="leading-tight">
+        <span class="block text-sm font-semibold">資安入口</span>
+        <span class="block font-mono text-[10px] uppercase tracking-[0.12em] text-faint">
+          Security Portal
+        </span>
+      </span>
+    </a>
+
+    <nav class="ml-4 hidden items-center gap-0.5 lg:flex" aria-label="主要導航">
+      {
+        navItems.map((item) => {
+          const active = current === item.id;
+          return (
+            <a
+              href={withBase(routes[item.href])}
+              class:list={[
+                "inline-flex h-11 items-center rounded-md px-2.5 text-[13px] font-medium transition-colors duration-150",
+                active
+                  ? "bg-accent-soft text-accent"
+                  : "text-muted hover:bg-subtle hover:text-ink",
+              ]}
+              aria-current={active ? "page" : undefined}
+            >
+              {item.label}
+            </a>
+          );
+        })
+      }
+    </nav>
+
+    <div class="ml-auto flex items-center gap-2">
+      <a
+        href={withBase(routes.search)}
+        class="inline-flex size-11 items-center justify-center rounded-md text-muted hover:bg-subtle hover:text-ink"
+        aria-label="站內搜尋佔位"
+      >
+        <Icon name="search" />
+      </a>
+      <div class="hidden sm:block">
+        <RoleSwitcher />
+      </div>
+      <button
+        type="button"
+        class="inline-flex size-11 items-center justify-center rounded-md text-ink lg:hidden"
+        data-nav-toggle
+        aria-expanded="false"
+        aria-controls="mobile-nav"
+      >
+        <span data-nav-open><Icon name="menu" /></span>
+        <span data-nav-close class="hidden"><Icon name="close" /></span>
+        <span class="sr-only">開啟選單</span>
+      </button>
+    </div>
+  </div>
+
+  <div id="mobile-nav" class="hidden border-t border-border bg-surface lg:hidden" data-mobile-nav>
+    <nav class="mx-auto flex max-w-7xl flex-col px-3 py-2" aria-label="行動導航">
+      {
+        navItems.map((item) => {
+          const active = current === item.id;
+          return (
+            <a
+              href={withBase(routes[item.href])}
+              class:list={[
+                "flex min-h-11 items-center rounded-md px-3 text-sm font-medium",
+                active ? "bg-accent-soft text-accent" : "text-ink",
+              ]}
+            >
+              {item.label}
+              <span class="ml-auto font-mono text-[10px] uppercase text-faint">{item.hint}</span>
+            </a>
+          );
+        })
+      }
+      <div class="border-t border-border px-3 py-3 sm:hidden">
+        <p class="mb-2 font-mono text-[10px] uppercase tracking-[0.12em] text-faint">
+          預留角色切換
+        </p>
+        <RoleSwitcher />
+      </div>
+    </nav>
+  </div>
+</header>

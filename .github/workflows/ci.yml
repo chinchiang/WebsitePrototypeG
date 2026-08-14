@@ -1,0 +1,37 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install
+        run: npm ci
+
+      - name: Validate frontmatter (PR gate)
+        run: npm run validate:frontmatter
+
+      - name: Build
+        env:
+          SITE_URL: https://example.internal
+          BASE_PATH: /
+        run: npm run build
+
+      - name: Generate Pagefind index
+        run: npm run pagefind
+
+      - name: Check internal links
+        run: npm run check:links
