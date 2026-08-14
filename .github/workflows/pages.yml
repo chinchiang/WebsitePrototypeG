@@ -47,6 +47,8 @@ jobs:
         run: npm run pagefind
 
       - name: Check internal links
+        env:
+          BASE_PATH: /WebsitePrototypeG/
         run: npm run check:links
 
       - name: Upload Pages artifact

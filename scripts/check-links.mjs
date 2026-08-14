@@ -2,6 +2,7 @@
 /**
  * 架構先行、內容後補
  * 檢查 dist 內站內連結是否斷裂（相對路徑 / base-aware）。
+ * 若未提供 BASE_PATH，會從首頁資產路徑推斷 GitHub Pages 子路徑。
  */
 import fs from "node:fs";
 import path from "node:path";
@@ -20,7 +21,18 @@ function normalizeBase(raw) {
   return withLead.replace(/\/+$/, "");
 }
 
-const basePrefix = normalizeBase(process.env.BASE_PATH ?? process.env.PUBLIC_BASE_PATH ?? "/");
+function inferBaseFromIndex() {
+  const indexPath = path.join(DIST, "index.html");
+  if (!fs.existsSync(indexPath)) return "";
+  const html = fs.readFileSync(indexPath, "utf8");
+  const asset = html.match(/href="(\/[^"]*\/_astro\/[^"]+)"/);
+  if (!asset) return "";
+  const prefix = asset[1].replace(/\/_astro\/.*$/, "");
+  return prefix === "" ? "" : prefix;
+}
+
+const envBase = normalizeBase(process.env.BASE_PATH ?? process.env.PUBLIC_BASE_PATH ?? "");
+const basePrefix = envBase || inferBaseFromIndex();
 
 function walk(dir) {
   return fs.readdirSync(dir, { withFileTypes: true }).flatMap((entry) => {
@@ -77,4 +89,6 @@ if (errors.length) {
   process.exit(1);
 }
 
-console.log(`Link check passed (${htmlFiles.length} html files).`);
+console.log(
+  `Link check passed (${htmlFiles.length} html files, base=${basePrefix || "/"}).`,
+);
