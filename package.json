@@ -27,6 +27,6 @@
     "@astrojs/check": "^0.9.10",
     "@types/node": "^22.16.5",
     "pagefind": "^1.5.2",
-    "typescript": "~5.9.0"
+    "typescript": "~7.0.2"
   }
 }
