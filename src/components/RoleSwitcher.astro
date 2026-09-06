@@ -4,13 +4,19 @@
  * 角色切換為 UI 預留，不連接真實帳號或權限系統。
  */
 import { roles } from "../lib/roles";
+
+interface Props {
+  /** Header renders this twice (desktop bar + mobile menu); ids must differ. */
+  id?: string;
+}
+const { id = "role-select" } = Astro.props;
 ---
 
 <div class="role-switcher">
-  <label class="sr-only" for="role-select">預留角色切換（無真實邏輯）</label>
+  <label class="sr-only" for={id}>預留角色切換（無真實邏輯）</label>
   <select
-    id="role-select"
-    name="role"
+    id={id}
+    name={id}
     data-role-switcher
     class="h-11 min-w-[9.5rem] rounded-md border border-border bg-surface px-3 text-sm text-ink"
   >

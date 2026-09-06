@@ -4,6 +4,7 @@
 // GitHub Pages：BASE_PATH=/WebsitePrototypeG/
 
 import { defineConfig } from "astro/config";
+import { loadEnv } from "vite";
 import tailwindcss from "@tailwindcss/vite";
 
 function normalizeBase(raw) {
@@ -12,8 +13,13 @@ function normalizeBase(raw) {
   return withLead.endsWith("/") ? withLead : `${withLead}/`;
 }
 
-const site = process.env.SITE_URL ?? process.env.PUBLIC_SITE_URL ?? "https://example.internal";
-const base = normalizeBase(process.env.BASE_PATH ?? process.env.PUBLIC_BASE_PATH ?? "/");
+// Astro only exposes .env to import.meta.env, not to this config file, so
+// load it explicitly; real shell variables still win (CI / workflows).
+const fileEnv = loadEnv(process.env.NODE_ENV ?? "production", process.cwd(), "");
+const env = (key) => process.env[key] ?? fileEnv[key];
+
+const site = env("SITE_URL") ?? env("PUBLIC_SITE_URL") ?? "https://example.internal";
+const base = normalizeBase(env("BASE_PATH") ?? env("PUBLIC_BASE_PATH") ?? "/");
 
 export default defineConfig({
   site,
